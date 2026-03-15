@@ -15,7 +15,97 @@ datasource db {
 
 model Usuario {
   id       Int     @id @default(autoincrement())
+  code     String  @unique @default(cuid())
   nome     String
   email    String  @unique
   senha    String
+  cpf     String  @unique
+  telefone String  @unique
+  status   Boolean @default(true)
+  emailConfirmado Boolean @default(false)
+  primeiroAcesso Boolean @default(true)
+  senhaTemporaria Boolean @default(false)
+  permitirAcessoComSenhaTemporaria Boolean @default(false)
+  criadoEm DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  // relacoes
+  Endereco Endereco[]
+  UsuarioPerfil UsuarioPerfil[]
+
+}
+
+model Endereco {
+  id       Int     @id @default(autoincrement())
+  code     String  @unique @default(cuid())
+  usuarioId Int
+  cep      String
+  logradouro String
+  numero   String
+  complemento String?
+  bairro   String
+  cidade   String
+  estado   String
+  pais     String
+  criadoEm DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  // relacaoo com usuario
+  Usuario Usuario @relation(fields: [usuarioId], references: [id])
+
+  @@unique([usuarioId, cep, logradouro, numero])
+}
+
+model Perfil {
+  id       Int     @id @default(autoincrement())
+  code     String  @unique @default(cuid())
+  nome     String
+  status   Boolean @default(true)
+  criadoEm DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+  // relacoes
+  PerfilFuncionalidade PerfilFuncionalidade[]
+  UsuarioPerfil UsuarioPerfil[]
+}
+
+model Funcionalidades {
+  id       Int     @id @default(autoincrement())
+  code     String  @unique @default(cuid())
+  nome     String
+  funcionalidade String @unique
+  status   Boolean @default(true)
+  criadoEm DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  //relacoes
+  PerfilFuncionalidade PerfilFuncionalidade[]
+}
+
+model PerfilFuncionalidade {
+  id       Int     @id @default(autoincrement())
+  perfilId Int
+  funcionalidadeId Int
+  status   Boolean @default(true)
+  criadoEm DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  // relacoes
+  Perfil Perfil @relation(fields: [perfilId], references: [id])
+  Funcionalidades Funcionalidades @relation(fields: [funcionalidadeId], references: [id])
+
+  @@unique([perfilId, funcionalidadeId])
+}
+
+model UsuarioPerfil {
+  id       Int     @id @default(autoincrement())
+  usuarioId Int
+  perfilId Int
+  status   Boolean @default(true)
+  criadoEm DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+  // relacoes
+  Usuario Usuario @relation(fields: [usuarioId], references: [id])
+  Perfil Perfil @relation(fields: [perfilId], references: [id])
+
+  @@unique([usuarioId, perfilId])
 }
