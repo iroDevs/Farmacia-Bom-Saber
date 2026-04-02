@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #3b82f6; /* Blue 500 */
+  --color-primary-dark: #7c3aed; /* Purple 600 */
+  
+  --color-bg-light: #ffffff;
+  --color-bg-dark: #0f172a; /* Slate 900 */
+  
+  --color-sidebar-light: #f8fafc;
+  --color-sidebar-dark: #1e1b4b; /* Indigo 950 */
+}
+
+@layer base {
+  :root {
+    background-color: var(--color-bg-light);
+    color: #1e293b;
+  }
+  
+  :root.dark {
+    background-color: var(--color-bg-dark);
+    color: #f8fafc;
+  }
+}
