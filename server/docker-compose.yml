@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    # Se desejado, adicione volumes para persistência
+    # volumes:
+    #   - ./ollama-data:/var/lib/ollama
